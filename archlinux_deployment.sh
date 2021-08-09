@@ -1,12 +1,18 @@
+# TODO: Configure ZShell / zsh
+# TODO: Install Xfce, Gnome, whatever, ...
+# TODO: Automated updates
+# TODO: No logs
+# TODO: Security (AV, Firewall, Monitoring, etc.)
+
 # German keyboard layout
 loadkeys de
 
 # Global variables
-DEV = "/dev/sda" # Harddisk
-EFI = "/dev/sda1" # EFI partition
-LUKS = "/dev/sda2" # LUKS partition
-UCODE = "intel-ucode" # CPU microcode
-USER = "alex" # Username
+DEV="/dev/sda" # Harddisk
+EFI="/dev/sda1" # EFI partition
+LUKS="/dev/sda2" # LUKS partition
+UCODE="intel-ucode" # CPU microcode
+USER="alex" # Username
 
 # System clock
 timedatectl set-ntp true # Enable network time synchronization
@@ -42,7 +48,7 @@ swapon /dev/luksvg/swap # Activate swap partition
 
 # Install base packages
 pacman -Syy
-pacstrap /mnt base base-devel linux linux-firmware mkinitcpio sudo lvm2 dhcpcd wpa_supplicant nano zsh zsh-completions zsh-syntax-highlighting tilix $UCODE # Install base packages
+pacstrap /mnt base base-devel git linux linux-firmware mkinitcpio sudo lvm2 dhcpcd wpa_supplicant nano zsh zsh-completions zsh-syntax-highlighting tilix $UCODE # Install base packages
 
 # fstab
 genfstab -U /mnt > /mnt/etc/fstab # Generate fstab file
@@ -91,7 +97,7 @@ echo "@includedir /etc/sudoers.d" >> /etc/sudoers # ???
 mkdir /root/keyfiles # Create folder to hold keyfiles
 chmod 700 /root/keyfiles # Protect keyfiles folder
 dd if=/dev/urandom of=/root/keyfiles/boot.keyfile bs=512 count=1 # Generate pseudorandom keyfile
-sync # Assert memory is written to disk
+sync # Assert that memory is written to disk
 chmod 600 /root/keyfiles/boot.keyfile # Protect key file
 cryptsetup -v luksAddKey -i 1 $LUKS /root/keyfiles/boot.keyfile # Adding keyfile as key for LUKS partition
 echo "FILES=(/root/keyfiles/boot.keyfile)" >> /etc/mkinitcpio.conf # Adding keyfile as resource to iniramfs image
@@ -106,11 +112,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi # Install GRUB --boot
 grub-mkconfig -o /boot/grub/grub.cfg # Generate GRUB configuration file
 chmod 700 /boot # Protect /boot
 
-# Install X11/Wayland & Desktop Environment
-# LXDE / LXQt / KDE / Gnome / Pantheon / Xfce / OWN ???
-
 # Install yay for access to the AUR ecosystem
-sudo pacman -S --needed --noconfirm git base-devel
 mkdir /home/$USER/Tools
 cd /home/$USER/Tools
 git clone https://aur.archlinux.org/yay.git
