@@ -54,10 +54,10 @@ pacman -Syy
 pacstrap /mnt base base-devel git linux linux-firmware mkinitcpio sudo lvm2 dhcpcd wpa_supplicant nano zsh zsh-completions zsh-syntax-highlighting tilix $UCODE # Install base packages
 
 # Mount or create necessary entry points
-mkdir /mnt/boot
+mkdir /mnt/boot/efi
 mount $EFI /mnt/boot/efi
 mount -t proc proc /mnt/proc
-mount -t sysfs sys /mnt/sys
+#mount -t sysfs sys /mnt/sys
 mount -o bind /dev /mnt/dev
 mount -t devpts /dev/pts /mnt/dev/pts/
 mount -o bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
