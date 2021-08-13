@@ -57,9 +57,8 @@ pacstrap /mnt base base-devel git linux linux-firmware mkinitcpio sudo lvm2 dhcp
 mkdir /mnt/boot/efi
 mount $EFI /mnt/boot/efi
 mount -t proc proc /mnt/proc
-#mount -t sysfs sys /mnt/sys
-mount -o bind /dev /mnt/dev
 mount -t devpts /dev/pts /mnt/dev/pts/
+mkdir /mnt/sys/firmware/efi/efivars
 mount -o bind /sys/firmware/efi/efivars /mnt/sys/firmware/efi/efivars
 
 # fstab
