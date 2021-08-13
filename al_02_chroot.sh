@@ -47,10 +47,10 @@ echo "@includedir /etc/sudoers.d" >> /etc/sudoers # ???
 echo "Adding keyfile for LUKS partition..."
 mkdir /root/keyfiles # Create folder to hold keyfiles
 chmod 700 /root/keyfiles # Protect keyfiles folder
-dd if=/dev/urandom of=/root/keyfiles/boot.keyfile bs=512 count=1 # Generate pseudorandom keyfile
+dd bs=512 count=4 if=/dev/urandom of=/root/keyfiles/boot.keyfile iflag=fullblock # Generate pseudorandom keyfile
 sync # Assert that memory is written to disk
-chmod 600 /root/keyfiles/boot.keyfile # Protect key file
-cryptsetup -v luksAddKey -i 1 $LUKS /root/keyfiles/boot.keyfile # Adding keyfile as key for LUKS partition
+chmod 000 /root/keyfiles/boot.keyfile # Protect key file
+cryptsetup -v luksAddKey $LUKS /root/keyfiles/boot.keyfile # Adding keyfile as key for LUKS partition
 echo "FILES=(/root/keyfiles/boot.keyfile)" >> /etc/mkinitcpio.conf # Adding keyfile as resource to iniramfs image
 mkinitcpio -p linux # Recreate initramfs image
 
